@@ -1,0 +1,30 @@
+ int dp[1001][1001];
+ 
+  int solve(int arr[],int i,int j){
+      int mn=1e9;
+      if(i>=j)return dp[i][j]=0;
+      if(dp[i][j]!=-1)return dp[i][j];
+       for(int k=i;k<=j-1;k++){
+          // cout<<k;
+          int left,right;
+            if(dp[i][k]!=-1)left=dp[i][k];
+            else { left=  solve(arr,i,k);
+                    dp[i][k]=left; };
+            if(dp[k+1][j]!=-1)right=dp[k+1][j];
+            else {right= solve(arr,k+1,j) ;
+                   dp[k+1][j]=right;}
+            int temp= left+right+arr[i-1]*arr[k]*arr[j];
+            if(mn>temp)mn=temp;
+          //  cout<<temp;
+        }
+      //  cout<<mn<<" ";
+        return dp[i][j]= mn;
+  }
+    int matrixMultiplication(int n, int arr[])
+    {
+        // code here
+         memset(dp,-1,sizeof (dp));
+        int i=1,j=n-1;
+       return solve(arr,i,j);
+       
+    }
