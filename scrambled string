@@ -1,0 +1,24 @@
+   unordered_map<string,int>mp;
+     bool solve( string a,string b){
+         if(a.size()!=b.size())return false;
+         if(a==b)return true;
+         if(a.size()<=1)return false;
+         string temp;
+         temp.append(a);
+         temp.push_back('_');
+         temp.append(b);
+         if(mp.find(temp)!=mp.end())return mp[temp];
+         int n=a.size();
+         for(int i=1;i<a.size();i++){
+            bool cond1=solve(a.substr(0,i),b.substr(n-i,i))&&solve(a.substr(i,n-i),b.substr(0,n-i));
+             bool cond2=solve(a.substr(0,i),b.substr(0,i))&&solve(a.substr(i,n-i),b.substr(i,n-i));
+             if(cond1||cond2){return mp[temp]= true;
+                             }
+         }
+         return mp[temp]=false;
+     }
+    bool isScramble(string a, string b) {
+         if(a.size()!=b.size())return false;
+      if(a==b)return true;
+         return solve(a,b);
+    }
