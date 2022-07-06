@@ -1,0 +1,49 @@
+unordered_map<string ,int>mp;
+    int solve(string s, int i,int j, bool  istrue){
+        int ans=0;
+        if(i>j)return 0;
+        if(i==j){
+            if(istrue==true)return s[i]=='T';
+            else return s[i]=='F';
+        }
+        string temp;
+         int mod=1003;
+        temp.append(to_string(i));
+        temp.push_back(' ');
+        temp.append(to_string(j));
+        temp.push_back(' ');
+        temp.append(to_string(istrue));
+        if(mp.find(temp)!=mp.end())return mp[temp];
+        for(int k=i+1;k<=j-1;k=k+2){
+         
+           
+            int lt=solve(s,i,k-1,true);
+            int lf=solve(s,i,k-1,false);
+            int rt=solve(s,k+1,j,true);
+            int rf=solve(s,k+1,j,false);
+           
+            if(s[k]=='&'){
+                if(istrue==true)ans=ans+( lt*rt)%mod;
+                   else ans=ans+ (lf*rt+lt*rf+lf*rf)%mod;
+                   
+            }
+            else if(s[k]=='|'){
+                if(istrue==true)ans=ans+ (lt*rt+lt*rf+lf*rt)%mod;
+                else ans=ans+ (lf*rf)%mod;
+            }
+            else if(s[k]=='^'){
+                if(istrue==true)ans=ans+ (lt*rf+lf*rt)%mod;
+                else ans=ans+ (lt*rt+lf*rf)%mod;
+            }
+        }
+        // cout<<temp<<"-> "<<ans<<endl;
+        return mp[temp]=ans%mod;
+       
+        
+    }
+    int countWays(int n, string s){
+        // code here
+        
+        int i=0,j=n-1;
+        return solve(s,i,j,true);
+    }
