@@ -1,0 +1,26 @@
+  bool ispalindrome(string a,int i,int j){
+      while(i<j){
+          if(a[i]!=a[j])return false;
+          i++;
+          j--;
+      }
+      return true;
+  }
+    string longestPalin (string s) {
+        // code here
+        int n=s.size();
+        string ans;
+        int size=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+              
+               if((j-i+1>size)&& ispalindrome(s,i,j)){
+                   ans=s.substr(i,j-i+1);
+                   size=j-i+1;
+                  
+               }
+            }
+        }
+       
+        return ans;
+    }
