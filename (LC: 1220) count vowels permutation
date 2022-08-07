@@ -1,0 +1,83 @@
+  long long dp[20001][6];
+    int mod=1000000007;
+    long long  solve(int n,unordered_map<char,int>&mp,string &s,long long dp[200001][6]){
+                 if(n<=0)return 1;       // no element needs to be added
+        char ch=s[s.size()-1];
+         int last=mp[ch];
+                                                         
+     if(dp[n][last]!=-1)return dp[n][last]%mod;
+              
+           
+        long long a=0,b=0,c=0,d=0,e=0;
+        if(last==1){
+            s.push_back('e');
+            a= solve(n-1,mp,s,dp)%mod;
+            s.pop_back();
+        }
+        if(last==2){
+              s.push_back('a');
+            b=solve(n-1,mp,s,dp)%mod;
+            s.pop_back();
+              s.push_back('i');
+            b=b+solve(n-1,mp,s,dp)%mod;
+            s.pop_back();
+        }
+        if(last==3){
+              s.push_back('a');
+            c=   solve(n-1,mp,s,dp)%mod;
+             s.pop_back();
+              s.push_back('e');
+             c+=solve(n-1,mp,s,dp)%mod;
+             s.pop_back();
+              s.push_back('o');
+               c+=solve(n-1,mp,s,dp)%mod;
+             s.pop_back();
+                   s.push_back('u');
+                   c+=solve(n-1,mp,s,dp)%mod;
+             s.pop_back();
+                  }
+        if(last==4){
+            s.push_back('i');
+            d=   solve(n-1,mp,s,dp)%mod;
+             s.pop_back();
+             s.push_back('u');
+               d+=solve(n-1,mp,s,dp)%mod;
+               s.pop_back();
+        }
+        if(last==5){
+            s.push_back('a');
+            e=solve(n-1,mp,s,dp)%mod;
+            s.pop_back();
+            
+        }
+        return dp[n][last]=(a+b+c+d+e)%mod;
+        
+                     
+    }
+    int countVowelPermutation(int n) {
+        unordered_map<char,int>mp;
+        mp['a']=1;
+        mp['e']=2;
+         mp['i']=3;
+         mp['o']=4;                                                                               
+         mp['u']=5;
+        string s;
+        memset(dp,-1,sizeof(dp));
+       // dp[0][last]=1;     
+        s.push_back('a');
+     unsigned long int ans= solve(n-1,mp,s,dp)%mod;
+        s.pop_back();
+         s.push_back('e');
+        ans+=solve(n-1,mp,s,dp)%mod;
+         s.pop_back();
+         s.push_back('i');
+        ans+=solve(n-1,mp,s,dp)%mod;
+         s.pop_back();
+         s.push_back('o');
+               ans+=solve(n-1,mp,s,dp)%mod;
+         s.pop_back();
+         s.push_back('u');
+              ans+=solve(n-1,mp,s,dp)%mod;
+         s.pop_back();
+        return ans%mod;
+    }
