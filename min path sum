@@ -1,0 +1,48 @@
+  int NumberOfPath(int a, int b)
+    {
+        //code here
+        
+        //vector<vector<int>>dp(a,vector<int>(b,0));
+       // solve(a,b,dp);
+       vector<int>dp(b,1);
+       vector<int>temp(b,0);
+       temp[0]=1;
+        for(int i=1;i<a;i++){
+           for(int j=1;j<b;j++){
+                temp[j]=dp[j]+temp[j-1];
+           }
+           dp=temp;
+       
+        }
+      
+        return  dp[b-1];
+    }
+    
+    
+    //////////////tabulation/////////
+    
+     int minPathSum(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,0));
+         dp[0][0]=grid[0][0];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                long long up=INT_MAX,left=INT_MAX;
+                if(i==0&&j==0)dp[0][0]=grid[0][0];
+                else{
+               if(i>0) up=dp[i-1][j]+grid[i][j];
+                if(j>0)left=dp[i][j-1]+grid[i][j];
+
+                dp[i][j]=min(up,left);
+                }
+            }
+        }
+        return dp[n-1][m-1];
+    }
+    
+    
+    
+    /////////////////////////////////////////space optimisation///////////////////////
+    
+    
