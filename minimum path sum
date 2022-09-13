@@ -1,0 +1,64 @@
+ int solve(vector<vector<int>>&matrix,int r,int c,vector<vector<int>>&dp){
+        int n=matrix.size();
+        int m=matrix[0].size();
+ 
+        if(r<0||c<0||c>=m)return 1e9;
+               if(r==0)return matrix[0][c];
+        if(dp[r][c]!=-1)return dp[r][c];
+        long long int u=1e9,ld=1e9,rd=1e9;
+        if(r>0) u=solve(matrix,r-1,c,dp)+matrix[r][c];
+        if(r>0&&c>0) ld=solve(matrix,r-1,c-1,dp)+matrix[r][c];
+        if(r>0&&c<m) rd=solve(matrix,r-1,c+1,dp)+matrix[r][c];
+        
+        return dp[r][c]=min({u,ld,rd});
+        
+        
+    }
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int ans=1e9;
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        for(int i=0;i<m;i++){
+        
+                ans=min(ans,solve(matrix,n-1,i,dp));
+            
+        }
+       return ans;
+    }
+    ///////////////////////////////tabulation/////////////////////////////////////////
+    
+     int minFallingPathSum(vector<vector<int>>& matrix) {
+        
+        int n=matrix.size();
+        int m=matrix[0].size();
+        
+        
+        vector<vector<int>>dp(n,vector<int>(m,1e9));
+        for(int i=0;i<m;i++){
+        
+               dp[0][i]=matrix[0][i];
+            
+        }
+        
+        for(int i=1;i<n;i++){
+            for(int j=0;j<m;j++){
+             int u=1e9,ld=1e9,rd=1e9;
+                   u=dp[i-1][j]+matrix[i][j];
+        if(j>0) ld=dp[i-1][j-1]+matrix[i][j];
+        if(j+1<m) rd=dp[i-1][j+1]+matrix[i][j];
+            dp[i][j]=min({u,ld,rd});
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                cout<<dp[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+       int ans=INT_MAX;
+        for(int i=0;i<m;i++){
+            ans=min(ans,dp[n-1][i]);
+        }
+        return ans;
+    }
