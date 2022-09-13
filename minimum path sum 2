@@ -1,0 +1,44 @@
+  int solve(vector<vector<int>>&matrix,int r,int c,vector<vector<int>>&dp){
+        int n=matrix.size();
+        int m=matrix[0].size();
+ 
+        if(r<0||c<0||c>=m)return 1e9;
+               if(r==0){
+                   int res=1e9;
+                   for(int i=0;i<m;i++){
+                       if(i!=c){
+                           res=min(res,matrix[0][i]);
+                       }
+                   }
+                   return  dp[0][c]=res;
+               };
+       if(dp[r][c]!=-1)return dp[r][c];
+         int temp=1e9,ld=1e9,rd=1e9;
+      
+       for(int k=0;k<m;k++){
+           if(k!=c){
+               temp=min(temp,solve(matrix,r-1,k,dp)+matrix[r][k]);
+           }
+       }
+        return dp[r][c]=temp;
+        
+    }
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int ans=1e9;
+        if(n==1){
+            int ans=1e9;
+            for(int i=0;i<m;i++){
+                ans=min(ans,matrix[0][i]);
+            }
+            return ans;
+        }
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        for(int i=0;i<m;i++){
+        
+                ans=min(ans,solve(matrix,n-1,i,dp));
+            
+        }
+       return ans;
+    }
