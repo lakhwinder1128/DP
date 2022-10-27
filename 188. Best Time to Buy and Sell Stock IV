@@ -1,0 +1,29 @@
+ //solve using second method  N*4 wala
+ 
+ 
+ // int f(vector<int>&prices,int ind,int trans,int k,vector<vector<int>>&dp){
+    //     int n=prices.size();
+    //     if(trans==2*k||ind==n)return 0;
+    //     if(dp[ind][trans]!=-1)return dp[ind][trans];
+    //     if(trans%2==0){
+    //         return dp[ind][trans]=max(-prices[ind]+f(prices,ind+1,trans+1,k,dp),f(prices,ind+1,trans,k,dp));
+    //     }
+    //     else return dp[ind][trans]= max(prices[ind]+f(prices,ind+1,trans+1,k,dp),f(prices,ind+1,trans,k,dp));
+    // }
+    int maxProfit(int k, vector<int>& prices) {
+        int n=prices.size();
+        int trans=0;
+      //  vector<vector<int>>dp(n+1,vector<int>(2*k+1,0));
+        vector<int>ahead(2*k+1,0),cur(2*k+1,0);
+        
+        for(int ind=n-1;ind>=0;ind--){
+            for(int trans=2*k-1;trans>=0;trans--){
+                if(trans%2==0){
+                 cur[trans]=max(-prices[ind]+ahead[trans+1],ahead[trans]);
+                 }
+                else cur[trans]= max(prices[ind]+ahead[trans+1],ahead[trans]);
+                  }
+            ahead=cur;
+             }
+        return cur[0];
+    }
