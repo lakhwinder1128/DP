@@ -1,0 +1,18 @@
+        int f(vector<int>&nums,int ind,vector<int>&dp,int n){
+                
+                if(ind>=n)return 0;
+                if(dp[ind]!=-1)return dp[ind];
+                return dp[ind]=max(nums[ind]+f(nums,ind+2,dp,n),f(nums,ind+1,dp,n));
+
+            }
+            int rob(vector<int>& nums) {
+                int n=nums.size();
+                int ind=0;
+                vector<int>dp(n+1,-1);
+                int a=nums[0]+f(nums,2,dp,n-1);      // take  0th index element cant take 1st index cant take last(n-1)th                                                                        index element
+                   for(int i=0;i<n;i++){
+                       dp[i]=-1;
+                   }                              
+                int b=f(nums,1,dp,n);
+                return max(a,b);
+            }
