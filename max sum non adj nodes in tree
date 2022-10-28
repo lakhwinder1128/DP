@@ -1,0 +1,19 @@
+pair<int,int> f(TreeNode* root){
+        if(root==NULL){
+            return {0,0};
+        }                                   // first =take,   second= nottake   that node
+        pair<int,int>left  = f(root->left ) ;
+        pair<int,int>right = f(root->right) ;
+        pair<int,int>res;
+        res.first = root->val+left.second+right.second;
+        res.second= max(left.first,left.second)+max(right.first,right.second);
+        return res;
+        
+        
+    }
+    int rob(TreeNode* root) {
+        if(root==NULL)return 0;
+        pair<int,int>ans=f(root);
+        return max(ans.first,ans.second);
+    }
+    
