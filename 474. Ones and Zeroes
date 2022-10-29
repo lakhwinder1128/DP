@@ -1,0 +1,46 @@
+   int f(vector<pair<int,int>>&count,int m,int n,int ind,vector<vector<vector<int>>>&dp){
+        int size=count.size();
+        if(ind>=size||m<0||n<0)return 0;
+        int take=0,nottake=0;
+            nottake=f(count,m,n,ind+1,dp);
+           if(dp[ind][m][n]!=-1)return dp[ind][m][n];
+        if(m-count[ind].first>=0 && n-count[ind].second>=0){
+            take=f(count,m-count[ind].first,n-count[ind].second,ind+1,dp)+1;
+        }
+        //cout<<max(take,nottake)<<" ";
+        return dp[ind][m][n]= max(take,nottake);
+    }
+    
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<pair<int,int>>count;
+        for(int i=0;i<strs.size();i++){
+            int ones=0,zeroes=0;
+            for(int j=0;j<strs[i].size();j++){
+                if(strs[i][j]=='0')zeroes++;
+                else ones++;
+            }
+          
+            count.push_back({zeroes,ones});
+        }
+         vector<vector<int>>ahead(m+1,vector<int>(n+1,0)),cur(m+1,vector<int>(n+1,0));
+        
+        for(int i=strs.size()-1;i>=0;i--){
+            for(int j=0;j<=m;j++){
+                for(int k=0;k<=n;k++){
+                   int take=0,nottake=0;
+                    nottake=ahead[j][k];
+                        
+                    if(j-count[i].first>=0 && k-count[i].second>=0){
+                    take=ahead[j-count[i].first][k-count[i].second]+1;
+                    }
+                    cur[j][k]=max(take,nottake);
+                }
+                
+            }
+            ahead=cur;
+        }
+        
+        return cur[m][n];
+        
+        
+    }
