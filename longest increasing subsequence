@@ -36,3 +36,16 @@
         }
          return length;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int longestSubsequence(int n, int a[])
+    {
+     vector<int>v;
+       v.push_back(a[0]);
+       for(int i=1;i<n;i++){
+           int ind=lower_bound(v.begin(),v.end(),a[i])-v.begin();
+           if(ind>=v.size())v.push_back(a[i]);
+           else v[ind]=a[i];
+       }
+       return v.size();
+}
