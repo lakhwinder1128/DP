@@ -1,0 +1,24 @@
+find the count of ap subsequences
+class Solution{
+public:
+        long long int count(int n, int a[])
+        {
+            // code here
+            int count=0;
+            int ans=1;
+            vector<unordered_map<int,int>>mp(n);
+            for(int end=0;end<n;end++){
+                for(int start=0;start<end;start++){
+                    int diff=a[end]-a[start];
+                    int length=0;
+                    if(mp[start].find(diff)!=mp[start].end()){
+                        length=mp[start][diff];
+                    }
+                    mp[end][diff]+=length+1;   //new length of this diff 
+                    ans+=length+1;
+                }
+            }
+            return ans+n;
+        }
+};
+
