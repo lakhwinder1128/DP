@@ -1,0 +1,71 @@
+We have been given N balloons, each with a number of coins associated with it. On bursting a balloon i, the number of coins gained is equal to A[i-1]*A[i]*A[i+1].
+Also, balloons i-1 and i+1 now become adjacent. Find the maximum possible profit earned after bursting all the balloons. Assume an extra 1 at each boundary.
+Input:
+N=4
+a[] = {3,1,5,8}
+Output:
+167
+Explanation:
+nums = [3,1,5,8] --> [3,5,8] --> [3,8] --> [8] --> []
+coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167.
+
+solution:DP Solution: For a DP solution to exist, we need to define the subproblems. Let's define the problem first as:
+
+solve(nums, i, j)
+by which I mean that we need to burst balloons starting from index i to index j. At the beginning, they'll be 0, nums.size() -1 respectively. Let's suppose we burst the kth balloon in the first chance. We will get nums[k-1] * nums[k] * nums[k+1] coins. Now let's define the subproblems as:
+
+solve(nums, i, k - 1) , solve(nums, k + 1, j)
+
+ 
+
+As the balloon k is already burst, we solve the subproblems from i to k -1 and k + 1 to j. But wait, what's going wrong here? The subproblem solve(nums, i, k - 1) and solve(nums, k + 1, j) are not independent since after bursting kth balloon, balloon k - 1 and k + 1 have become adjacent and they will need each other in order to calculate the profit.
+
+ 
+
+So, as we saw that if we choose the kth balloon to be the first one to be burst, we can't make the subproblems independent. Let's try the other way round. We choose the kth balloon as the last one to be burst. Now the subproblems will become independent since (k - 1)th balloon and (k + 1)th balloon won't need each other in order to calculate the answer. (Try it out using pen and paper).
+
+ 
+
+Now for each k starting from i to j, we choose the kth balloon to be the last one to be burst and calculate the profit by solving the subproblems recursively. Whichever choice of k gives us the best answer, we store it and return.
+
+Important point to be noted here is that the balloons in the range (i, k - 1) and (k + 1, j) will be burst BEFORE kth balloon. So, when we burst the kth balloon, the profit will be nums[i - 1] * nums[k] * nums[j + 1] PROVIDED that index i - 1 and j + 1 are valid
+
+
+
+//////  memoisation:
+ int solve(vector<int>&a,int i,int j, vector<vector<int>>&dp){
+        if(i>j)return 0;
+        int mx=INT_MIN;
+        if(dp[i][j]!=-1)return dp[i][j];
+        for(int k=i;k<=j;k++){
+            int cost=a[i-1]*a[k]*a[j+1]+ solve(a,i,k-1,dp) + solve(a,k+1,j,dp);
+            mx=max(mx,cost);
+        }
+        return dp[i][j]=mx;
+    }
+
+    //tabulation:
+     int maxCoins(int n, vector <int> &a)
+        {
+                // write your code here
+                a.push_back(1);
+                a.insert(a.begin(),1);
+                vector<vector<int>>dp(n+2,vector<int>(n+2,0));
+                for(int i=n;i>=1;i--)
+                {
+                for(int j=i;j<=n;j++){
+                    int mx=INT_MIN;
+                   
+                    for(int k=i;k<=j;k++){
+                    int cost=a[i-1]*a[k]*a[j+1]+ dp[i][k-1] + dp[k+1][j];
+                    mx=max(mx,cost);
+                    }
+                    dp[i][j]=mx;
+                }
+                
+            }
+            
+            
+            return dp[1][n];
+               // return solve(a,1,n,dp);
+        }
